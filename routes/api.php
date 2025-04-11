@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Users\UserController;
+use App\Http\Middleware\AuthenticateToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::controller(UserController::class)->group(function () {
+
+    Route::post('signup', 'create');
+    Route::post('signin', 'authenticate');
 });
 
-Route::get('/details/{word}', [ApiController::class, 'get'])->name('get_word');
+Route::middleware(AuthenticateToken::class)->group(function () {
+
+    Route::get('/entries/en/{word}', [ApiController::class, 'get'])->name('get_word');
+});

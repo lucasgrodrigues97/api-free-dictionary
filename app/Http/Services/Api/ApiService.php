@@ -23,6 +23,6 @@ class ApiService
             ];
         }
 
-        $meanings = $data[0]['meanings'];
+        return $data[0]['meanings'];
     }
 }

@@ -23,9 +23,9 @@ class ApiController extends Controller
 
             return response()->json($this->apiService->getWord($word));
 
-        } catch (Throwable $e) {
+        } catch (Throwable $t) {
 
-            Log::error($e);
+            Log::error($t);
 
             return response()->json([
                 'status'  => false,
