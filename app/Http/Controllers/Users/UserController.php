@@ -51,4 +51,55 @@ class UserController extends Controller
             ], 400);
         }
     }
+
+    public function show(): JsonResponse
+    {
+        try {
+
+            return response()->json($this->userService->show());
+
+        } catch (Throwable $t) {
+
+            Log::error($t);
+
+            return response()->json([
+                'status'  => false,
+                'message' => trans('validation.something_wrong'),
+            ], 400);
+        }
+    }
+
+    public function histories(): JsonResponse
+    {
+        try {
+
+            return response()->json($this->userService->histories());
+
+        } catch (Throwable $t) {
+
+            Log::error($t);
+
+            return response()->json([
+                'status' => false,
+                'message' => trans('validation.something_wrong'),
+            ], 400);
+        }
+    }
+
+    public function favorites(): JsonResponse
+    {
+        try {
+
+            return response()->json($this->userService->favorites());
+
+        } catch (Throwable $t) {
+
+            Log::error($t);
+
+            return response()->json([
+                'status'  => false,
+                'message' => trans('validation.something_wrong'),
+            ], 400);
+        }
+    }
 }

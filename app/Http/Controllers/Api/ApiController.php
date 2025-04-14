@@ -98,4 +98,30 @@ class ApiController extends Controller
             ], 400);
         }
     }
+
+    public function unfavorite(string $word): JsonResponse
+    {
+        try {
+
+            $word = $this->wordService->get($word);
+
+            if ($word) {
+
+                $user = $this->userService->getCurrentUser();
+
+                return response()->json($this->favoriteService->delete($user->id, $word->id));
+            }
+
+            return response()->json(['message' => trans('validation.word_not_found')]);
+
+        } catch (Throwable $t) {
+
+            Log::error($t);
+
+            return response()->json([
+                'status'  => false,
+                'message' => trans('validation.something_wrong'),
+            ], 400);
+        }
+    }
 }

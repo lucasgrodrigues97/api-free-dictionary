@@ -40,4 +40,14 @@ Route::middleware(AuthenticateToken::class)->group(function () {
             });
         });
     });
+
+    Route::controller(UserController::class)->group(function () {
+
+        Route::prefix('/user/me')->group(function () {
+
+            Route::get('/', 'show');
+            Route::get('/histories', 'histories');
+            Route::get('/favorites', 'favorites');
+        });
+    });
 });

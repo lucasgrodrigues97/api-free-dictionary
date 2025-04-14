@@ -17,4 +17,9 @@ class FavoriteService
     {
         return $this->favoriteRepository->create($userId, $wordId);
     }
+
+    public function delete(int $userId, int $wordId): array
+    {
+        return $this->favoriteRepository->delete($userId, $wordId);
+    }
 }

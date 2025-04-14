@@ -2,13 +2,31 @@
 
 namespace App\Http\Services\Api;
 
+use App\Http\Repositories\Histories\HistoryRepository;
+use App\Http\Repositories\Users\UserRepository;
+use App\Http\Repositories\Words\WordRepository;
 use Illuminate\Support\Facades\Http;
 
 class ApiService
 {
-    public function getWord(string $word): array
+    private WordRepository $wordRepository;
+    private UserRepository $userRepository;
+    private HistoryRepository $historyRepository;
+
+    public function __construct(
+        WordRepository    $wordRepository,
+        UserRepository    $userRepository,
+        HistoryRepository $historyRepository
+    )
     {
-        $url = env('DICTIONARY_API_URL') . "$word";
+        $this->wordRepository = $wordRepository;
+        $this->userRepository = $userRepository;
+        $this->historyRepository = $historyRepository;
+    }
+
+    public function getWord(string $wordSearch): array
+    {
+        $url = env('DICTIONARY_API_URL') . "$wordSearch";
 
         $response = Http::get($url);
 
@@ -22,6 +40,10 @@ class ApiService
                 'message' => trans('validation.word_not_found'),
             ];
         }
+
+        $user = $this->userRepository->getCurrentUser();
+        $word = $this->wordRepository->get($wordSearch);
+        $this->historyRepository->create($user->id, $word->id);
 
         $details = [];
 

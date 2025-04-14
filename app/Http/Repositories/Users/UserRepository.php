@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
-    public function getCurrentUser(): Authenticatable
+    public function getCurrentUser(): User|Authenticatable
     {
         return Auth::guard('api')->user();
     }

@@ -2,7 +2,11 @@
 
 namespace App\Http\Services\Users;
 
+use App\Enums\Favorites\FavoriteEnum;
 use App\Http\Repositories\Users\UserRepository;
+use App\Models\Favorites\Favorite;
+use App\Models\Histories\History;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +20,7 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function getCurrentUser(): Authenticatable
+    public function getCurrentUser(): User|Authenticatable
     {
         return $this->userRepository->getCurrentUser();
     }
@@ -46,5 +50,56 @@ class UserService
         return [
             'message' => trans('validation.invalid_credentials'),
         ];
+    }
+
+    public function show(): array
+    {
+        $user = $this->getCurrentUser();
+
+        return [
+            'name'  => $user->name,
+            'email' => $user->email,
+            'added' => $user->created_at->format('d/m/Y H:i:s'),
+        ];
+    }
+
+    public function histories(): array
+    {
+        $user = $this->getCurrentUser();
+
+        $data = [];
+
+        /* @var History $history */
+
+        foreach ($user->histories as $history) {
+
+            $data[] = [
+                'word'  => $history->word->name,
+                'added' => $history->created_at->format('d/m/Y H:i:s'),
+            ];
+        }
+
+        return $data;
+    }
+
+    public function favorites(): array
+    {
+        $user = $this->getCurrentUser();
+
+        $favorites = $user->favorites->where('status', FavoriteEnum::FAVORITED);
+
+        $data = [];
+
+        /* @var Favorite $favorite */
+
+        foreach ($favorites as $favorite) {
+
+            $data[] = [
+                'word'  => $favorite->word->name,
+                'added' => $favorite->created_at->format('d/m/Y H:i:s'),
+            ];
+        }
+
+        return $data;
     }
 }
