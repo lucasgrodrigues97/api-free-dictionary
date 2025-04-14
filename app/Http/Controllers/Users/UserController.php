@@ -69,11 +69,11 @@ class UserController extends Controller
         }
     }
 
-    public function histories(): JsonResponse
+    public function history(): JsonResponse
     {
         try {
 
-            return response()->json($this->userService->histories());
+            return response()->json($this->userService->history());
 
         } catch (Throwable $t) {
 

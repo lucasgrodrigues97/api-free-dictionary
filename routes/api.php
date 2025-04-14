@@ -46,7 +46,7 @@ Route::middleware(AuthenticateToken::class)->group(function () {
         Route::prefix('/user/me')->group(function () {
 
             Route::get('/', 'show');
-            Route::get('/histories', 'histories');
+            Route::get('/history', 'history');
             Route::get('/favorites', 'favorites');
         });
     });

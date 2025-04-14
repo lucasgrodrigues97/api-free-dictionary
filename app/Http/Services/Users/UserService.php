@@ -63,7 +63,7 @@ class UserService
         ];
     }
 
-    public function histories(): array
+    public function history(): array
     {
         $user = $this->getCurrentUser();
 
