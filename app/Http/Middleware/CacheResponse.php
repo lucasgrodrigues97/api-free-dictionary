@@ -28,10 +28,12 @@ class CacheResponse
 
             $cached = Cache::get($key);
 
-            return response()->json($cached['body'], 200, array_merge(
+            $headers = array_merge(
                 $cached['headers'],
                 ['x-cache' => 'HIT', 'x-response-time' => round((microtime(true) - $start) * 1000) . 'ms']
-            ));
+            );
+
+            return response()->json($cached['body'], 200, $headers);
         }
 
         $response = $next($request);
