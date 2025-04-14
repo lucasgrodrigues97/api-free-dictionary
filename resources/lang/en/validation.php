@@ -5,6 +5,7 @@ return [
     'word_not_found'      => 'Word not found.',
     'no_definitions'      => 'No Definitions Found',
     'something_wrong'     => 'Whoops, looks like something went wrong.',
+    'email_exists'        => 'Email already registered.',
     'favorite_word'       => 'Favorite word successfully',
     'unfavorite_word'     => 'Unfavorite word successfully',
     'already_favorite'    => 'This word is already in the favorites list.',

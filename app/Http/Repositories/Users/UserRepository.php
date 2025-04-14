@@ -15,11 +15,24 @@ class UserRepository
         return Auth::guard('api')->user();
     }
 
+    public function checkEmail(?string $email): bool
+    {
+        return User::query()->where('email', '=', $email)->count() > 0;
+    }
+
     public function create(Request $request): array
     {
-        $name = $request->get('name');
-        $email = $request->get('email');
-        $password = $request->get('password');
+        $email = $request->input('email');
+
+        if ($this->checkEmail($email)) {
+
+            return [
+                'message' => trans('validation.email_exists'),
+            ];
+        }
+
+        $name = $request->input('name');
+        $password = $request->input('password');
 
         if ($name && filter_var($email, FILTER_VALIDATE_EMAIL) && $password) {
 

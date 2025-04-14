@@ -4,6 +4,7 @@ namespace App\Http\Repositories\Words;
 
 use App\Models\Words\Word;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class WordRepository
@@ -22,7 +23,7 @@ class WordRepository
             ->first();
     }
 
-    public function getAll(?string $search): Collection
+    public function getAll(?string $search, ?string $limit): Collection|LengthAwarePaginator
     {
         $words = Word::query();
 
@@ -31,6 +32,6 @@ class WordRepository
             $words = $words->where('name', 'like', "%$search%");
         }
 
-        return $words->get();
+        return $limit ? $words->paginate($limit) : $words->get();
     }
 }

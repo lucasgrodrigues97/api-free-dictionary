@@ -33,8 +33,8 @@ class UserService
     public function authenticate(Request $request): array
     {
         $data = [
-            'email'    => $request->get('email'),
-            'password' => $request->get('password'),
+            'email'    => $request->input('email'),
+            'password' => $request->input('password'),
         ];
 
         if (Auth::attempt($data)) {

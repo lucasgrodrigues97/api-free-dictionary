@@ -31,32 +31,30 @@ class WordService
 
     public function getAll(Request $request): array
     {
-        $search = $request->get('search');
-        $limit = $request->get('limit');
+        $search = $request->input('search');
+        $limit = $request->input('limit');
 
-        $words = $this->wordRepository->getAll($search);
-
-        $totalDocs = $words->count();
+        $words = $this->wordRepository->getAll($search, $limit);
 
         if ($limit) {
 
-            $words = $words->slice(0, $limit);
-
             return [
                 'results'    => $words->pluck('name')->toArray(),
-                'totalDocs'  => $totalDocs,
-                'page'       => 1,
-                'totalPages' => ceil($totalDocs / $limit),
-                'hasNext'    => true,
-                'hasPrev'    => false,
+                'totalDocs'  => $words->total(),
+                'page'       => $words->currentPage(),
+                'totalPages' => $words->lastPage(),
+                'hasNext'    => $words->hasMorePages(),
+                'hasPrev'    => $words->currentPage() > 1,
             ];
         }
 
         return [
             'results'    => $words->pluck('name')->toArray(),
-            'totalDocs'  => $totalDocs,
+            'totalDocs'  => $words->count(),
             'page'       => 1,
             'totalPages' => 1,
+            'hasNext'    => false,
+            'hasPrev'    => false,
         ];
     }
 }
