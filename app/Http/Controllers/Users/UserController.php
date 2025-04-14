@@ -31,7 +31,7 @@ class UserController extends Controller
             return response()->json([
                 'status'  => false,
                 'message' => trans('validation.something_wrong'),
-            ], 500);
+            ], 400);
         }
     }
 
@@ -48,7 +48,7 @@ class UserController extends Controller
             return response()->json([
                 'status'  => false,
                 'message' => trans('validation.something_wrong'),
-            ], 500);
+            ], 400);
         }
     }
 }

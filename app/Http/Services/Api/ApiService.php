@@ -23,6 +23,20 @@ class ApiService
             ];
         }
 
-        return $data[0]['meanings'];
+        $details = [];
+
+        $meanings = $data[0]['meanings'];
+
+        foreach ($meanings as $meaning) {
+
+            foreach ($meaning['definitions'] as $data) {
+
+                $details[] = $data['definition'];
+            }
+        }
+
+        return [
+            'details' => $details,
+        ];
     }
 }

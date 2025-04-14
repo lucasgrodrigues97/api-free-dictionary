@@ -16,13 +16,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [ApiController::class, 'index']);
+
 Route::controller(UserController::class)->group(function () {
 
-    Route::post('signup', 'create');
-    Route::post('signin', 'authenticate');
+    Route::post('/signup', 'create');
+    Route::post('/signin', 'authenticate');
 });
 
 Route::middleware(AuthenticateToken::class)->group(function () {
 
-    Route::get('/entries/en/{word}', [ApiController::class, 'get'])->name('get_word');
+    Route::controller(ApiController::class)->group(function () {
+
+        Route::prefix('/entries/en')->group(function () {
+
+            Route::get('/', 'all');
+
+            Route::prefix('/{word}')->group(function () {
+
+                Route::get('/', 'search');
+                Route::post('/favorite', 'favorite');
+                Route::delete('/unfavorite', 'unfavorite');
+            });
+        });
+    });
 });

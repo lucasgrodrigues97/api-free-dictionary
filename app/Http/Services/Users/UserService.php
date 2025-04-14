@@ -3,6 +3,7 @@
 namespace App\Http\Services\Users;
 
 use App\Http\Repositories\Users\UserRepository;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,11 @@ class UserService
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
+    }
+
+    public function getCurrentUser(): Authenticatable
+    {
+        return $this->userRepository->getCurrentUser();
     }
 
     public function create(Request $request): array
@@ -30,7 +36,7 @@ class UserService
         if (Auth::attempt($data)) {
 
             return [
-                'message' => 'Token gerado com sucesso',
+                'message' => trans('validation.token_generated'),
                 'data' => [
                     'token' => Auth::user()->createToken('API')->accessToken,
                 ]
@@ -38,7 +44,7 @@ class UserService
         }
 
         return [
-            'message' => 'Invalid credentials.',
+            'message' => trans('validation.invalid_credentials'),
         ];
     }
 }

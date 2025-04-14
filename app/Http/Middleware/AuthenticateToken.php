@@ -29,7 +29,7 @@ class AuthenticateToken
             if (!$isAuthenticate) {
 
                 return response()->json([
-                    'message' => 'Token inválido ou não permitido para essa requisição.',
+                    'message' => trans('validation.invalid_token'),
                 ]);
 
             } else {
@@ -46,7 +46,7 @@ class AuthenticateToken
             Log::error($t->getMessage());
 
             return response()->json([
-                'message' => 'Token inválido ou não permitido para essa requisição.',
+                'message' => trans('validation.invalid_token'),
             ]);
         }
     }
