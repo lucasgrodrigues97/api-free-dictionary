@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Middleware\AuthenticateToken;
+use App\Http\Middleware\CacheResponse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/signin', 'authenticate');
 });
 
-Route::middleware(AuthenticateToken::class)->group(function () {
+Route::middleware([CacheResponse::class, AuthenticateToken::class])->group(function () {
 
     Route::controller(ApiController::class)->group(function () {
 
